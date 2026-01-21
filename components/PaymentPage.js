@@ -74,7 +74,21 @@ useEffect(() => {
     let a = await initiate(amount,params.username,paymentform);
    
 
-
+    if (a.error) {
+       
+      toast(a.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+      return; // Stop here
+    }
  
     let orderId=a.id;
     const options = {
@@ -179,8 +193,18 @@ transition={Bounce}
          <h1 className='font-bold my-2'>SUPPORTERS</h1>
          <ul className='mx-3 overflow-y-scroll '>
          { payments && payments.map((p,i)=>{
-            return <li key={p.oid} className='flex border border-slate-600 gap-1 p-2 items-center my-4' ><img className='w-7 h-7 rounded-full' src="/wallpaper.avif" alt="" /><span> {p.name} donated <span className='font-bold text-green-400'> ₹{p.amount}</span> with a message "{p.message}"</span></li>
-
+return (
+  <li key={p.oid} className='flex border border-slate-700 rounded-lg gap-3 p-3 items-center my-3 bg-slate-800/50 hover:bg-slate-800 transition-colors'>
+    <img className='w-8 h-8 rounded-full border border-slate-600' src="/wallpaper.avif" alt="" />
+    
+    <span className='text-sm text-slate-200'> 
+      <span className='font-semibold text-white'>{p.name}</span> 
+      <span> donated </span>
+      <span className='font-bold text-green-400'>₹{p.amount}</span> 
+      <span className='text-slate-400 italic block mt-1'>"{p.message}"</span>
+    </span>
+  </li>
+)
          })}
          {payments.length==0 && <p className='text-slate-300'>No fundings done yet</p>}
            
@@ -204,7 +228,7 @@ transition={Bounce}
          <div className=' text-white w-full flex flex-col   gap-4    justify-between'>
            
  <input onChange={handleChange} name="message" value={paymentform.message}  className=" w-full   rounded-lg p-2 bg-slate-800 border border-slate-400  " type="text" placeholder='Leave a message' />
- <button onClick={() => handlePay(Number(paymentform.amount) * 100)}  className='py-2 md:px-6 px-2 rounded-lg text-slate-100  bg-gradient-to-br from-purple-700 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 disabled:from-slate-500 ' disabled={!paymentform.name?.trim() || !paymentform.message?.trim()|| paymentform.amount.length<1  } >Pay</button>
+ <button onClick={() => handlePay(Number(paymentform.amount) * 100)}  className='py-2 md:px-6 px-2 rounded-lg text-slate-100  bg-gradient-to-br from-purple-700 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 disabled:from-purple-400 disabled:to-blue-400 ' disabled={!paymentform.name?.trim() || !paymentform.message?.trim()|| paymentform.amount.length<1  } >Pay</button>
  
  </div>
          </div>
