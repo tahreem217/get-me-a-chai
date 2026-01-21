@@ -74,7 +74,7 @@ export default function Home() {
 
           <div className="h-[50vh] md:w-[70vw] w-[95vw] text-white   m-auto  flex flex-col gap-6 justify-center pt-10 items-center ">
           <h1 className="text-xl font-bold">Learn more about crowd funding </h1>
-          <iframe width="560" className="w-[80vw]   object-fit: cover; " height="315" src="https://www.youtube.com/embed/5HO8080ynNc?si=Pfo1croRzL4XKydT" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe width="560" className="w-[80vw]   object-fit: cover; " height="315" src="https://www.youtube.com/embed/5HO8080ynNc?si=Pfo1croRzL4XKydT" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
             </div>
           
       </>   

@@ -49,7 +49,7 @@ useEffect(() => {
  
 },[]);
   const handlePay=async (amount)=>{
-    // Check if Razorpay is loaded
+    
   if (typeof window.Razorpay === 'undefined') {
     alert("Razorpay is still loading. Please wait a moment and try again.");
     return;
@@ -78,14 +78,52 @@ useEffect(() => {
  
     let orderId=a.id;
     const options = {
-      "key":`${currentUser.razorpayid}`,  
+     "key": process.env.NEXT_PUBLIC_KEY_ID,
     "amount": amount,   
     "currency": "INR",
     "name": "get me a chai",  
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
     "order_id": orderId,  
-   "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
+   // THE HANDLER: This replaces callback_url
+   "handler": async function (response) {
+    // Show a "Processing" toast
+    const loadingToast = toast.loading("Verifying payment...");
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/razorpay`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+      }),
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      toast.update(loadingToast, { 
+        render: "Thanks for your support ❤️", 
+        type: "success", 
+        isLoading: false, 
+        autoClose: 5000 
+      });
+      
+      // REFRESH DATA: This updates your supporters list and total raised
+      await getData(); 
+      setpaymnentform({ name: "", message: "", amount: "" });
+      // Optional: Clean up the URL
+      router.push(`/${params.username}`);
+    } else {
+      toast.update(loadingToast, { 
+        render: "Payment verification failed", 
+        type: "error", 
+        isLoading: false, 
+        autoClose: 5000 
+      });
+    }
+  },
     "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
         "name": "Gaurav Kumar", //your customer's name
         "email": "gaurav.kumar@example.com",
@@ -123,11 +161,11 @@ transition={Bounce}
     
 <div className="text-white min-h-screen  flex flex-col relative  "  >
        
-       <div className='bg-white '>
-         <img className='cover  h-[450px] w-full' src={currentUser.coverpic} alt="" />
+       <div className='bg-slate-800 rounded-lg border border-slate-700 '>
+         <img className='object-cover h-[450px] w-full' src={currentUser.coverpic || "https://www.pixelstalk.net/wp-content/uploads/2016/04/Grey-backgrounds-wallpapers-HD.png"} alt="" />
        </div>
        <div   >
-       <img className=' absolute h-[200px] w-[200px] rounded-full top-[370px] left-1/2 -translate-x-1/2 border border-white  ' src={currentUser.profilepic} alt="" />
+       <img className=' absolute h-[200px] w-[200px] rounded-full top-[370px] left-1/2 -translate-x-1/2 border border-white  ' src={currentUser.profilepic || "https://t3.ftcdn.net/jpg/08/05/28/22/360_F_805282248_LHUxw7t2pnQ7x8lFEsS2IZgK8IGFXePS.jpg"} alt="" />
        <div className='justify-center gap-2 mt-36 text-white items-center flex flex-col '>
        <h1 className='text-xl font-bold'>{params.username}</h1>
        <p className='text-slate-300'>Help {currentUser.name} to get a chai</p>
@@ -165,13 +203,15 @@ transition={Bounce}
          </div>
          <div className=' text-white w-full flex flex-col   gap-4    justify-between'>
            
- <input onChange={handleChange} name="message" value={paymentform.message }  className=" w-full   rounded-lg p-2 bg-slate-800 border border-slate-400  " type="text" placeholder='Leave a message' />
+ <input onChange={handleChange} name="message" value={paymentform.message}  className=" w-full   rounded-lg p-2 bg-slate-800 border border-slate-400  " type="text" placeholder='Leave a message' />
  <button onClick={() => handlePay(Number(paymentform.amount) * 100)}  className='py-2 md:px-6 px-2 rounded-lg text-slate-100  bg-gradient-to-br from-purple-700 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 disabled:from-slate-500 ' disabled={!paymentform.name?.trim() || !paymentform.message?.trim()|| paymentform.amount.length<1  } >Pay</button>
- {/* or choose form these amount */}
-  
+ 
  </div>
          </div>
        </div>
+     </div>
+     <div className='w-screen h-72 md:h-36'>
+
      </div>
    </>
   )

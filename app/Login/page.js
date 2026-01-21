@@ -22,7 +22,7 @@ const Login = () => {
 
       <div className="flex flex-col gap-3  p-8 rounded-lg shadow-lg">
  
-        {/* <button className="flex items-center hover:border-2 hover:border-cyan-500 bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200">
+        <button onClick={()=>{signIn("google")}} className="flex items-center hover:border-2 hover:border-cyan-500 bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200">
         <svg
   className="h-5 w-5 mr-3"
   xmlns="http://www.w3.org/2000/svg"
@@ -47,17 +47,17 @@ const Login = () => {
 </svg>
 
           Continue with Google
-        </button> */}
+        </button>
  
         {/* <button className="flex items-center bg-white border hover:border-2 hover:border-cyan-500 border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200">
           <span className="mr-2 text-xl  text-blue-600 font-bold">in</span>
           Continue with LinkedIn
         </button>
- 
-        <button className="flex items-center bg-white border hover:border-2 hover:border-cyan-500  border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200">
+  */}
+        {/* <button className="flex items-center bg-white border hover:border-2 hover:border-cyan-500  border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200">
           <span className="mr-2 text-xl text-sky-500 font-bold">X</span>
           Continue with Twitter
-        </button> */}
+        </button>  */}
 
        
         {/* <button className="flex items-center bg-white border hover:border-2 hover:border-cyan-500  border-gray-300 rounded-lg shadow-md px-6 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200">
