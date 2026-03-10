@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import User from "@/models/Users";
 import dbConnect from "@/lib/dbConnect";
 
-export const authOptions = {
+ const authOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
